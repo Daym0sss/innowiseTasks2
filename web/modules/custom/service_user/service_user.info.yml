@@ -1,5 +1,0 @@
-name: User Management Module
-description: Creates a page for working with Users data.
-
-type: module
-core_version_requirement: ^9.4 || ^10
