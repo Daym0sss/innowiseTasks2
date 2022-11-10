@@ -1,5 +1,0 @@
-{
-    "name": "drupal/service_user",
-    "description": "Project for managing users data",
-    "type": "drupal-module"
-}
