@@ -13,7 +13,6 @@ class ServiceController
           'gender' => 'male',
           'status' => 'inactive'
         );
-
         $params=array(
           'id' => '4924'
         );*/
@@ -36,8 +35,8 @@ class ServiceController
         }
 
         return [
-          '#theme' => 'main_template',
-          '#data' => $result_arr,
+            '#theme' => 'main_template',
+            '#data' => $result_arr,
         ];
     }
 }
