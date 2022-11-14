@@ -1,1 +1,10 @@
+<?php
 
+function service_user_theme($existing, $type, $theme, $path): array
+{
+    return [
+        'main_template' => [
+            'variables' => ['data' => NULL]
+        ]
+    ];
+}
