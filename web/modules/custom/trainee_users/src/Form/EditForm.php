@@ -1,11 +1,9 @@
 <?php
 
-namespace Drupal\service_user\Form;
+namespace Drupal\trainee_users\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\service_user\services\UserServiceObject;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class EditForm extends FormBase
 {
@@ -18,15 +16,12 @@ class EditForm extends FormBase
 
   public function buildForm(array $form, FormStateInterface $form_state)
   {
-      $client=new UserServiceObject();
-      $routes=explode('/',$_SERVER['REQUEST_URI']);
+      $uri = $this->getRequest()->getRequestUri();
+      $routes=explode('/',$uri);
       $id=$routes[count($routes)-1];
       $this->id=$id;
-      $params=array(
-        'id' => $id
-      );
 
-      $obj=json_decode($client->getUserDetails($params));
+      $obj=\Drupal::service('trainee_users.user_service')->getUserById($id);
 
       $form['name']=array(
         '#type' => 'textfield',
@@ -74,15 +69,11 @@ class EditForm extends FormBase
   public function validateForm(array &$form, FormStateInterface $form_state)
   {
     $resultName=explode(" ",$form_state->getValue('name'));
-    if (count($resultName)!=2)
+    if (count($resultName)==0)
     {
       $form_state->setErrorByName('name',$this->t('You must enter name like: Ivan Ivanov'));
     }
-    elseif (strlen($resultName[0])==0 || strlen($resultName[1])==0)
-    {
-      $form_state->setErrorByName('name',$this->t('You must enter name like: Ivan Ivanov'));
-    }
-    if (!filter_var($form_state->getValue('email'), FILTER_VALIDATE_EMAIL))
+    if (!\Drupal::service('email.validator')->isValid($form_state->getValue('email')))
     {
       $form_state->setErrorByName('email',$this->t('Entered email is invalid'));
     }
@@ -97,9 +88,7 @@ class EditForm extends FormBase
       $parameters['gender'] = $form_state->getValue('gender');
       $parameters['status'] = $form_state->getValue('status');
 
-      $client=new UserServiceObject();
-      $client->updateUser($parameters);
-      $response=new RedirectResponse("http://drupal.docker.localhost/mainPage");
-      $response->send();
+      \Drupal::service('trainee_users.user_service')->updateUser($parameters);
+      $form_state->setRedirect("trainee_users.main_page");
   }
 }
