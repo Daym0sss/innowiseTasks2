@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <title>Edit user</title>
+</head>
+<body>
+  <form method="post" action="http://localhost/tasks/task2/users/update/">
+    <input type="hidden" name="id" value="<?php echo $this->user->id; ?>">
+    <label class="text-field__label" for="name">Name</label>
+    <input type="text" class="text-field__input" id="name" name="name" value="<?php echo $this->user->name; ?>">
+    <br>
+    <label class="text-field__label" for="email">E-mail</label>
+    <input type="text" class="text-field__input" id="email" name="email" value="<?php echo $this->user->email; ?>">
+    <br>
+    <label class="text-field__label" for="gender">Gender</label>
+    <select class="select" id="gender" name="gender">
+      <option value="male" <?php if($this->user->gender == "male") echo "selected"; ?> >Male </option>
+      <option value="female" <?php if($this->user->gender == "female") echo "selected"; ?>> Female</option>
+    </select>
+    <br>
+    <label class="text-field__label" for="status">Status</label>
+    <select class="select" id="status" name="status">
+      <option value="active" <?php if($this->user->status == "active") echo "selected"; ?>>Active</option>
+      <option value="inactive" <?php if($this->user->status == "inactive") echo "selected"; ?>>Inactive</option>
+    </select>
+    <br>
+    <input type="submit" class="main-page-button main-sub-button" style="margin: 0" value="Send">
+  </form>
+</body>
+</html>
