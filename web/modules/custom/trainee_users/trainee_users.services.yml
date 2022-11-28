@@ -1,0 +1,3 @@
+services:
+  trainee_users.user_service:
+    class: Drupal\trainee_users\UserService

@@ -1,0 +1,5 @@
+service_user.link:
+  title: 'User Management Module'
+  description: 'Module for users information management'
+  menu_name: main
+  route_name: trainee_users.main_page

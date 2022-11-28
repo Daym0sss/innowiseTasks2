@@ -1,0 +1,5 @@
+{
+    "name": "drupal/trainee_users",
+    "description": "Project for managing users data",
+    "type": "drupal-module"
+}

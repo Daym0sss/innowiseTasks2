@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Service for user management.
+ */
+
+/**
+ * Implements hook_theme().
+ * Provides passing variables for template page with users table
+ */
+function trainee_users_theme($existing, $type, $theme, $path): array {
+    return [
+      'main_template' => [
+        'variables' => ['data' => NULL,'links' => NULL]
+      ]
+    ];
+}

@@ -1,0 +1,15 @@
+# trainee_users.libraries.yml
+bootstrap:
+  remote: getbootstrap.com
+  version: 4.0
+  license:
+    name: MIT
+    url: https://github.com/twbs/bootstrap/blob/main/LICENSE
+  css:
+    theme:
+      'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css':
+        type: external
+        minified: true
+        attributes:
+          crossorigin: anonymous
+          integrity: "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"

@@ -1,0 +1,31 @@
+trainee_users.main_page:
+  path: '/mainPage'
+  defaults:
+    _controller: '\Drupal\trainee_users\Controller\UserListPageController::mainPage'
+    _title: 'Welcome to users management page'
+  requirements:
+    _permission: 'access content'
+
+trainee_users.add_user_page_form:
+  path: '/mainPage/add'
+  defaults:
+    _form: '\Drupal\trainee_users\Form\AddForm'
+    _title: 'Add new user'
+  requirements:
+    _permission: 'access content'
+
+trainee_users.delete_user_page_form:
+  path: '/mainPage/delete/{id}'
+  defaults:
+    _form: '\Drupal\trainee_users\Form\DeleteForm'
+    _title: 'Are you sure you want to delete this user?'
+  requirements:
+    _permission: 'access content'
+
+trainee_users.edit_user_page_form:
+  path: '/mainPage/edit/{id}'
+  defaults:
+    _form: '\Drupal\trainee_users\Form\EditForm'
+    _title: 'Edit user information'
+  requirements:
+    _permission: 'access content'
