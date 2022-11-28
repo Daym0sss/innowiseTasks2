@@ -2,6 +2,8 @@
 
 class UserController
 {
+    private $user;
+
     public function new()
     {
         require VIEW_PATH . "users/new.html";
@@ -9,8 +11,138 @@ class UserController
 
     public function create()
     {
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $gender = $_POST['gender'];
+        $status = $_POST['status'];
+
+        $nameValidate = $this->validateName($name);
+        $emailValidate = $this->validateEmail($email);
+
+        if ($nameValidate && $emailValidate)
+        {
+            $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
+            $sql = "INSERT INTO Users(name, email, gender, status) VALUES('" . $name . "', '" . $email . "', '" . $gender . "', '" . $status . "')";
+            $connection->query($sql);
+            header("Location: http://localhost/tasks/task2/");
+        }
+        else
+        {
+            $error = "";
+            if (!$nameValidate)
+            {
+                $error .= "Name field is invalid<br>";
+            }
+            if (!$emailValidate)
+            {
+                $error .= "E-mail field is invalid<br>";
+            }
+
+            $link = "http://localhost/tasks/task2/users/new";
+            $rel = "../assets/css/styles.css";
+            $src = "../assets/javascript/script.js";
+
+            require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users/invalid_data.html";
+        }
+
+    }
+
+    public function getById($id)
+    {
+        $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
+        $result = $connection->query("SELECT * FROM Users WHERE id=$id");
+        foreach ($result as $row)
+        {
+            $this->user = new User($row['id'], $row['name'], $row['email'], $row['gender'], $row['status']);
+            break;
+        }
+    }
+
+    public function edit($id)
+    {
+        $this->getById($id);
+        require VIEW_PATH . "users/edit.html";
+    }
+
+    public function update()
+    {
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $gender = $_POST['gender'];
+        $status = $_POST['status'];
+
+        $nameValidate = $this->validateName($name);
+        $emailValidate = $this->validateEmail($email);
+        if ($nameValidate && $emailValidate)
+        {
+            $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
+            $sql = "UPDATE Users SET name='" . $name . "', email='" . $email . "', gender='" . $gender . "', status='" . $status . "' WHERE id=$id";
+            $connection->query($sql);
+
+            header("Location: http://localhost/tasks/task2/");
+        }
+        else
+        {
+            $error = "";
+            if (!$nameValidate)
+            {
+                $error .= "Name field is invalid<br>";
+            }
+            if (!$emailValidate)
+            {
+                $error .= "E-mail field is invalid<br>";
+            }
+            $link = "http://localhost/tasks/task2/users/edit/" . $id;
+            $rel = "../../assets/css/styles.css";
+            $src = "../../assets/javascript/script.js";
+
+            require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users/invalid_data.html";
+        }
+    }
+
+    public function delete($id)
+    {
+        $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
+        $sql = "DELETE FROM Users WHERE id=$id";
+        $connection->query($sql);
+
+        header("Location: http://localhost/tasks/task2/");
+    }
+
+    private function validateName($name): bool
+    {
+        $nameParts = explode(' ', $name);
+        $characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        if (count($nameParts) <= 1)
+        {
+            return false;
+        }
+        else
+        {
+            foreach ($nameParts as $part)
+            {
+                for($i = 0; $i < strlen($part); $i++)
+                {
+                    if (!(stripos($characters, $part[$i]) >= 0))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+    private function validateEmail($email): bool
+    {
+        if (!filter_var($email,FILTER_VALIDATE_EMAIL))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

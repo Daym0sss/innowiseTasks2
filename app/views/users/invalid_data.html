@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="<?php echo $rel; ?>">
+    <script src="<?php echo $src; ?>"></script>
+    <title>Error</title>
+</head>
+<body>
+    <h1>The data you have entered is invalid: <br><?php echo $error; ?></h1>
+    <button class="main-page-button main-sub-button" style="margin: 0" onclick="tryEnterDataAgain('<?php echo $link; ?>')">Try again</button>
+</body>
+</html>

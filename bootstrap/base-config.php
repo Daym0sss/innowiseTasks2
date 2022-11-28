@@ -1,4 +1,9 @@
 <?php
+    const HOST = 'localhost';
+    const USER = 'root';
+    const PASSWORD = 'mynewpassword';
+    const DATABASE = 'innowisedb';
+
     $url = $_SERVER['REQUEST_URI'];
     $method = $_SERVER['REQUEST_METHOD'];
 
