@@ -2,10 +2,10 @@
 
 class UserFactory extends Seeds
 {
-    public function run()
+    public function run($limit)
     {
         $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
-        for($i = 0; $i < 10; $i++)
+        for($i = 0; $i < $limit; $i++)
         {
             $sql = "INSERT INTO Users(name, email, gender, status) VALUES('" . $this->randomName() . "', '" . $this->randomEmail() . "', '" . $this->randomGender() . "', '" . $this->randomStatus() . "')";
             $connection->query($sql);

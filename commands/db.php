@@ -9,6 +9,6 @@
      */
 
     /*
-     *  $seed = new UserFactory(); initialize seed object
+     *  $seed = new UserFactory(10); initialize seed object
      *  $seed->run();  method for fulfill table with test data
      */

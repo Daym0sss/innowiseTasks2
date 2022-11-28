@@ -2,7 +2,7 @@
 
 abstract class Seeds
 {
-    public function run()
+    public function run($limit)
     {
 
     }
