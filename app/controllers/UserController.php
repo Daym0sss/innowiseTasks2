@@ -21,9 +21,8 @@ class UserController
 
         if ($nameValidate && $emailValidate)
         {
-            $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
-            $sql = "INSERT INTO Users(name, email, gender, status) VALUES('" . $name . "', '" . $email . "', '" . $gender . "', '" . $status . "')";
-            $connection->query($sql);
+            $instance = LocalDB::getInstance();
+            $instance->create($name, $email, $gender, $status);
             header("Location: http://localhost/tasks/task2/");
         }
         else
@@ -49,8 +48,8 @@ class UserController
 
     public function getById($id)
     {
-        $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
-        $result = $connection->query("SELECT * FROM Users WHERE id=$id");
+        $instance = LocalDB::getInstance();
+        $result = $instance->getById($id);
         foreach ($result as $row)
         {
             $this->user = new User($row['id'], $row['name'], $row['email'], $row['gender'], $row['status']);
@@ -76,10 +75,8 @@ class UserController
         $emailValidate = $this->validateEmail($email);
         if ($nameValidate && $emailValidate)
         {
-            $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
-            $sql = "UPDATE Users SET name='" . $name . "', email='" . $email . "', gender='" . $gender . "', status='" . $status . "' WHERE id=$id";
-            $connection->query($sql);
-
+            $instance = LocalDB::getInstance();
+            $instance->edit($id, $name, $email, $gender, $status);
             header("Location: http://localhost/tasks/task2/");
         }
         else
@@ -103,10 +100,8 @@ class UserController
 
     public function delete($id)
     {
-        $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
-        $sql = "DELETE FROM Users WHERE id=$id";
-        $connection->query($sql);
-
+        $instance = LocalDB::getInstance();
+        $instance->delete($id);
         header("Location: http://localhost/tasks/task2/");
     }
 

@@ -9,25 +9,17 @@ class App
     public function __construct()
     {
         $controller = "";
-        $this->argument = -1;
         foreach (PATHS as $path)
         {
-            if (URL == $path['url'])
+            if (preg_match_all($path['regexUrl'],URL) == 1)
             {
                 $this->controller = $path['controller'];
-                $this->action = $path['action'];
-                break;
-            }
-            else if (($path['url'] == '/users/edit/' || $path['url'] == '/users/delete/' || $path['url'] == '/users/') && stripos(URL,$path['url']) == 0)
-            {
-                $id = substr(URL, strlen($path['url']));
-                if (preg_match_all("/^\+?\d+$/", $id) && $id[0] != '0')
+                if ($path['parameters'] == 1)
                 {
-                    $this->argument = $id;
-                    $this->controller = $path['controller'];
-                    $this->action = $path['action'];
-                    break;
+                    $routes = explode('/',URL);
+                    $this->argument = $routes[count($routes) - 1];
                 }
+                $this->action = $path['action'];
             }
         }
         if ($this->controller == "")
@@ -44,7 +36,7 @@ class App
     {
         $obj = new $this->controller();
         $method = $this->action;
-        if ($this->argument != -1)
+        if (isset($this->argument))
         {
             $obj->$method($this->argument);
         }

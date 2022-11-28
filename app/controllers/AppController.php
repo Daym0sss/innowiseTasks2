@@ -4,8 +4,8 @@ class AppController
 {
     public function index()
     {
-        $connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
-        $result = $connection->query("SELECT * FROM Users");
+        $instance = LocalDB::getInstance();
+        $result = $instance->getList();
         $users = [];
         foreach ($result as $row)
         {
