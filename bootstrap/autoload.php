@@ -1,4 +1,5 @@
 <?php
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/vendor/autoload.php";
     require "base-paths.php";
     require "base-config.php";
     require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/system/Migrations.php";

@@ -14,9 +14,9 @@
     <button class="btn btn-danger" onclick="deleteSelected()">Delete selected users</button>
     <div style="margin: 0 auto; text-align: center; margin: -40px">
         Pages
-        <?php foreach($links as $k => $v) {?>
-        <button class="btn btn-info" onclick="switchToPageByNum('<?php echo $v; ?>')"><?php echo $k+1; ?></button>
-        <?php } ?>
+        {% for linkUrl in links %}
+        <button class="btn btn-info" onclick="switchToPageByNum('{{ linkUrl }}')">{{ loop.index }}</button>
+        {% endfor %}
     </div>
     <br><br>
     <table class="table table-hover table-bordered border-info align-middle">
@@ -29,23 +29,23 @@
             <th>Status</th>
             <th>Actions</th>
         </tr>
-        <?php foreach($users as $user) { ?>
+        {% for user in users %}
         <tr>
-            <td><input type="checkbox" id="<?php echo $user->id; ?>"></td>
-            <td><?php echo $user->name; ?></td>
-            <td><?php echo $user->email; ?></td>
-            <td><?php echo $user->gender; ?></td>
-            <td><?php echo $user->status; ?></td>
+            <td><input type="checkbox" id={{ user.id }}></td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.gender }}</td>
+            <td>{{ user.status }}</td>
             <td>
-                <form method="post" action="http://localhost/tasks/task2/users/edit/<?php echo $user->id; ?>">
-                    <input type="hidden" value="<?php echo $user->id; ?>">
+                <form method="post" action="http://localhost/tasks/task2/users/edit/{{ user.id }}">
+                    <input type="hidden" name='id' value={{ user.id }}>
                     <input type="submit" class="btn btn-warning" value="Edit">
                 </form>
-                    <input type="hidden" value="<?php echo $user->id; ?>">
-                    <button class="btn btn-danger" onclick="deleteConfirmation(<?php echo $user->id; ?>)">Delete</button>
+                    <input type="hidden" name='id' value={{ user.id }}>
+                    <button class="btn btn-danger" onclick="deleteConfirmation({{ user.id }})">Delete</button>
             </td>
         </tr>
-        <?php } ?>
+        {% endfor %}
     </table>
     <button class="btn btn-primary" onclick="switchToUserAddition()">Add user</button>
 </body>

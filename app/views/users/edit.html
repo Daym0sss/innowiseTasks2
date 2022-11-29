@@ -8,16 +8,16 @@
 </head>
 <body>
   <form method="post" action="http://localhost/tasks/task2/users/update">
-    <input type="hidden" name="id" value="<?php echo $this->user->id; ?>">
+    <input type="hidden" name="id" value={{ id }}>
     <div class="form-group">
       <label for="name">Name</label>
-      <input type="text" class='form-control' id="name" name="name" value="<?php echo $this->user->name; ?>">
+      <input type="text" class='form-control' id="name" name="name" value={{ name }}>
     </div>
 
     <br>
     <div class="form-group">
       <label for="email">E-mail</label>
-      <input type="text" class="form-control" id="email" name="email" value="<?php echo $this->user->email; ?>">
+      <input type="text" class="form-control" id="email" name="email" value={{ email }}>
     </div>
 
     <br>
@@ -25,8 +25,12 @@
     <div class="form-group">
       <label for="gender">Gender</label>
       <select class="form-control" id="gender" name="gender">
-        <option value="male" <?php if($this->user->gender == "male") echo "selected"; ?> >Male </option>
-        <option value="female" <?php if($this->user->gender == "female") echo "selected"; ?>> Female</option>
+        {% set selected = '' %}
+        {% if gender == "male" %} {% set selected = 'selected' %} {% endif %}>
+        <option value="male" {{ selected }}> Male </option>
+        {% set selected = '' %}
+        {% if gender == "female" %} {% set selected = 'selected' %} {% endif %}>
+        <option value="female" {{ selected }}> Female </option>
       </select>
     </div>
 
@@ -35,8 +39,12 @@
     <div class="form-group">
       <label for="status">Status</label>
       <select class="form-control" id="status" name="status">
-        <option value="active" <?php if($this->user->status == "active") echo "selected"; ?>>Active</option>
-        <option value="inactive" <?php if($this->user->status == "inactive") echo "selected"; ?>>Inactive</option>
+        {% set selected = '' %}
+        {% if status == "active" %} {% set selected = 'selected' %} {% endif %}>
+        <option value="active" {{ selected }}> Active </option>
+        {% set selected = '' %}
+        {% if status == "inactive" %} {% set selected = 'selected' %} {% endif %}>
+        <option value="inactive" {{ selected }}> Inactive </option>
       </select>
     </div>
 

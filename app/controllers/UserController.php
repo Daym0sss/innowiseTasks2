@@ -6,7 +6,10 @@ class UserController
 
     public function new()
     {
-        require VIEW_PATH . "users/new.html";
+        $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
+        $twig = new Twig_Environment($loader);
+        $template = $twig->loadTemplate('new.html');
+        echo $template->render(array());
     }
 
     public function create()
@@ -30,18 +33,24 @@ class UserController
             $error = "";
             if (!$nameValidate)
             {
-                $error .= "Name field is invalid<br>";
+                $error .= "Name field is invalid ";
             }
             if (!$emailValidate)
             {
-                $error .= "E-mail field is invalid<br>";
+                $error .= "E-mail field is invalid";
             }
 
             $link = "http://localhost/tasks/task2/users/new";
-            $rel = "../assets/css/styles.css";
             $src = "../assets/javascript/script.js";
 
-            require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users/invalid_data.html";
+            $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
+            $twig = new Twig_Environment($loader);
+            $template = $twig->loadTemplate('invalid_data.html');
+            echo $template->render(array(
+                'link' => $link,
+                'src' => $src,
+                'error' => $error
+            ));
         }
 
     }
@@ -60,7 +69,17 @@ class UserController
     public function edit($id)
     {
         $this->getById($id);
-        require VIEW_PATH . "users/edit.html";
+
+        $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
+        $twig = new Twig_Environment($loader);
+        $template = $twig->loadTemplate('edit.html');
+        echo $template->render(array(
+            'id' => $this->user->id,
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'gender' => $this->user->gender,
+            'status' => $this->user->status
+        ));;
     }
 
     public function update()
@@ -84,17 +103,24 @@ class UserController
             $error = "";
             if (!$nameValidate)
             {
-                $error .= "Name field is invalid<br>";
+                $error .= "Name field is invalid ";
             }
             if (!$emailValidate)
             {
-                $error .= "E-mail field is invalid<br>";
+                $error .= "E-mail field is invalid";
             }
-            $link = "http://localhost/tasks/task2/users/edit/" . $id;
-            $rel = "../../assets/css/styles.css";
-            $src = "../../assets/javascript/script.js";
 
-            require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users/invalid_data.html";
+            $link = "http://localhost/tasks/task2/users/edit/" . $id;
+            $src = "../assets/javascript/script.js";
+
+            $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
+            $twig = new Twig_Environment($loader);
+            $template = $twig->loadTemplate('invalid_data.html');
+            echo $template->render(array(
+                'link' => $link,
+                'error' => $error,
+                'src' => $src
+            ));
         }
     }
 
@@ -117,7 +143,7 @@ class UserController
     {
         $nameParts = explode(' ', $name);
         $characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        if (count($nameParts) <= 1)
+        if (count($nameParts) < 1)
         {
             return false;
         }
