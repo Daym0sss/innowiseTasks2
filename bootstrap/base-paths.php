@@ -3,8 +3,8 @@
 
     $paths[] = [
         'url' => '/',
-        'regexUrl' => '/^\/$/',
-        'parameters' => 0,
+        'regexUrl' => '/^\/([1-9][0-9]*)?$/',
+        'parameters' => 1,
         'method' => 'GET',
         'controller' => 'AppController',
         'action' => 'index'

@@ -35,5 +35,10 @@
         <?php } ?>
     </table>
     <button class="btn btn-primary" onclick="switchToUserAddition()">Add user</button>
+    <div style="margin: 0 auto; text-align: center; margin: -40px">
+        <?php foreach($links as $k => $v) {?>
+            <button class="btn btn-info" onclick="switchToPageByNum('<?php echo $v; ?>')"><?php echo $k+1; ?></button>
+        <?php } ?>
+    </div>
 </body>
 </html>

@@ -17,7 +17,10 @@ class App
                 if ($path['parameters'] == 1)
                 {
                     $routes = explode('/',URL);
-                    $this->argument = $routes[count($routes) - 1];
+                    if (preg_match_all("/^\d+$/",$routes[count($routes)-1]))
+                    {
+                        $this->argument = $routes[count($routes) - 1];
+                    }
                 }
                 $this->action = $path['action'];
             }

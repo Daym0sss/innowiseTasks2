@@ -1,4 +1,7 @@
 <?php
+    require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/bootstrap/base-config.php";
+    require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/system/Seeds.php";
+    require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/system/Migrations.php";
     require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/database/migrations/m2022_11_25_create_users_table.php";
     require $_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/database/seeds/UserFactory.php";
 

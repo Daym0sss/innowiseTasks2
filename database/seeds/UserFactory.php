@@ -18,7 +18,7 @@ class UserFactory extends Seeds
         $result = "";
         for ($i = 0; $i < 20; $i++)
         {
-            $result .= $characters[$i];
+            $result .= $characters[rand(0,strlen($characters)-1)];
         }
 
         return $result;

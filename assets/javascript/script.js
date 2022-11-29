@@ -16,3 +16,8 @@ function tryEnterDataAgain(link)
 {
     window.location.href = link;
 }
+
+function switchToPageByNum(link)
+{
+    window.location.href = link;
+}

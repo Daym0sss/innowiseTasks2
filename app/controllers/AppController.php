@@ -2,17 +2,30 @@
 
 class AppController
 {
-    public function index()
+    public function index($pageNum = null)
     {
-        $instance = LocalDB::getInstance();
-        $result = $instance->getList();
-        $users = [];
-        foreach ($result as $row)
+        $instance = Pager::getInstance();
+        $result = ($pageNum == null)? $instance->getPage(1) : $instance->getPage($pageNum);
+        if ($result == null)
         {
-            $users[] = new User($row['id'], $row['name'], $row['email'], $row['gender'], $row['status']);
+            header('HTTP/1.0 404 Not Found', true, 404);
         }
+        else
+        {
+            $users = [];
+            foreach ($result as $row)
+            {
+                $users[] = new User($row['id'], $row['name'], $row['email'], $row['gender'], $row['status']);
+            }
 
-        require VIEW_PATH . 'main.html';
+            $links = [];
+            for($i = 1;$i <= $instance->getPagesCount(); $i++)
+            {
+                $links[] = 'http://localhost/tasks/task2/' . $i;
+            }
+
+            require VIEW_PATH . 'main.html';
+        }
     }
 
 }
