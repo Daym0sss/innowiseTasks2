@@ -15,7 +15,12 @@
     <div style="margin: 0 auto; text-align: center; margin: -40px">
         Pages
         {% for linkUrl in links %}
-        <button class="btn btn-info" onclick="switchToPageByNum('{{ linkUrl }}')">{{ loop.index }}</button>
+        {%if loop.index == currentPage %}
+            <button class="btn btn-warning" onclick="switchToPageByNum('{{ linkUrl }}')">{{ loop.index }}</button>
+        {% endif %}
+        {%if loop.index != currentPage %}
+            <button class="btn btn-info" onclick="switchToPageByNum('{{ linkUrl }}')">{{ loop.index }}</button>
+        {% endif %}
         {% endfor %}
     </div>
     <br><br>

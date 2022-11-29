@@ -12,6 +12,10 @@ class AppController
         }
         else
         {
+            if ($pageNum == null)
+            {
+                $pageNum = 1;
+            }
             $users = [];
             foreach ($result as $row)
             {
@@ -28,6 +32,7 @@ class AppController
             $twig = new Twig_Environment($loader);
             $template = $twig->loadTemplate('main.html');
             echo $template->render(array(
+                'currentPage' => $pageNum,
                 'links' => $links,
                 'users' => $users
             ));
