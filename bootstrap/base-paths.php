@@ -72,4 +72,14 @@
         'controller' => 'UserController',
         'action' => 'delete'
     ];
+
+    $paths[] = [
+        'url' => '/users/deleteGroup',
+        'regexUrl' => '/^\/users\/deleteGroup$/',
+        'parameters' => '0',
+        'method' => 'DELETE',
+        'controller' => 'UserController',
+        'action' => 'deleteGroup'
+    ];
+
     define('PATHS', $paths);

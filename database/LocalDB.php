@@ -52,9 +52,18 @@ class LocalDB extends Database implements IRequest
         $this->conn->query($sql);
     }
 
+    public function deleteGroup($id_arr)
+    {
+        foreach ($id_arr as $id)
+        {
+            $sql = "DELETE FROM Users WHERE id=$id";
+            $this->conn->query($sql);
+        }
+    }
+
     public function getByPageNum($from_record_number,$records_per_page)
     {
-        $sql = "SELECT * FROM Users ORDER BY name ASC LIMIT $from_record_number, $records_per_page";
+        $sql = "SELECT * FROM Users LIMIT $from_record_number, $records_per_page";
         return $this->conn->query($sql);
     }
 
@@ -67,6 +76,13 @@ class LocalDB extends Database implements IRequest
         {
             $records = $row['COUNT(id)'];
         }
-        return $records / $records_per_page;
+        if ($records % $records_per_page != 0)
+        {
+            return $records / $records_per_page + 1;
+        }
+        else
+        {
+            return $records / $records_per_page;
+        }
     }
 }

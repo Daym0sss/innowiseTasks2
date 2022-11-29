@@ -105,6 +105,14 @@ class UserController
         header("Location: http://localhost/tasks/task2/");
     }
 
+    public function deleteGroup()
+    {
+        $id_arr = $_POST['ids'];
+        $instance = LocalDB::getInstance();
+        $instance->deleteGroup($id_arr);
+        echo json_encode('ok');
+    }
+
     private function validateName($name): bool
     {
         $nameParts = explode(' ', $name);
