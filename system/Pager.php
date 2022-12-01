@@ -25,14 +25,14 @@ class Pager
     {
         if ($pageNumber > $this->pagesCount)
         {
-            return null;
+            $from_record_number = $this->recordsPerPage * ($this->pagesCount - 1);
         }
         else
         {
             $from_record_number = $this->recordsPerPage * ($pageNumber - 1);
-            $dbInstance = LocalDB::getInstance();
-            return $dbInstance->getByPageNum($from_record_number, $this->recordsPerPage);
         }
+        $dbInstance = LocalDB::getInstance();
+        return $dbInstance->getByPageNum($from_record_number, $this->recordsPerPage);
     }
 
     public function getPagesCount()
