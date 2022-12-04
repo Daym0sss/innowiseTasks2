@@ -11,20 +11,34 @@
 <body>
     <button class="btn btn-primary" onclick="checkAll()">Check all</button>
     <button class="btn btn-primary" onclick="uncheckAll()">Uncheck all</button>
-    <button class="btn btn-danger" onclick="deleteSelected()">Delete selected users</button>
+    <button class="btn btn-danger" onclick="deleteSelected('{{ db }}')">Delete selected users</button>
+    <form method="post" id='dbForm' action="http://localhost/tasks/task2/">
+        <select id="dbHandler" name="db" style="margin-left: 500px;position: relative;top: -30px" onchange="changeDB()">
+            {% set selected = '' %}
+            {% if db == "LocalDB" %} {% set selected = 'selected' %} {% endif %}>
+            <option value="LocalDB" {{ selected }}>Local database</option>
+            {% set selected = '' %}
+            {% if db == "REST_API" %} {% set selected = 'selected' %} {% endif %}>
+            <option value="REST_API" {{ selected }}>REST API database</option>
+        </select>
+    </form>
     <div style="margin: 0 auto; text-align: center; margin: -40px">
         Pages
+        <form method="post" action="http://localhost/tasks/task2/">
+        <input type="hidden" name="db" value={{ db }}>
+        <input type="hidden" name="pressed_button" id="pressed_button" value={{ currentPage }}>
         {% for linkUrl in links %}
         {%if loop.index == currentPage %}
-            <button class="btn btn-warning" onclick="switchToPageByNum('{{ linkUrl }}')">{{ loop.index }}</button>
+            <input type="button" class="btn btn-warning" value={{ loop.index }} onclick="addPageToPostRequest.call(this,'{{ loop.index }}')">
         {% endif %}
         {%if loop.index != currentPage %}
-            <button class="btn btn-info" onclick="switchToPageByNum('{{ linkUrl }}')">{{ loop.index }}</button>
+            <input type="button" class="btn btn-info" value={{ loop.index }} onclick="addPageToPostRequest.call(this,'{{ loop.index }}')">
         {% endif %}
         {% endfor %}
+        </form>
     </div>
     <br><br>
-    <table class="table table-hover table-bordered border-info align-middle">
+    <table class="table table-hover table-bordered border-info align-middle" style="position: relative;margin-top: 30px">
         <caption>Users information</caption>
         <tr>
             <th>#</th>
@@ -44,14 +58,21 @@
             <td>
                 <form method="post" action="http://localhost/tasks/task2/users/edit/{{ user.id }}">
                     <input type="hidden" name='id' value={{ user.id }}>
+                    <input type="hidden" name="db" value={{ db }}>
                     <input type="submit" class="btn btn-warning" value="Edit">
                 </form>
+                <form method="post" action="http://localhost/tasks/task2/users/delete/{{ user.id }}">
                     <input type="hidden" name='id' value={{ user.id }}>
-                    <button class="btn btn-danger" onclick="deleteConfirmation({{ user.id }})">Delete</button>
+                    <input type="hidden" name="db" value={{ db }}>
+                    <button class="btn btn-danger" onclick="deleteConfirmation({{ user.id }},event)">Delete</button>
+                </form>
             </td>
         </tr>
         {% endfor %}
     </table>
-    <button class="btn btn-primary" onclick="switchToUserAddition()">Add user</button>
+    <form method="post" action="http://localhost/tasks/task2/users/new">
+        <input type="hidden" name="db" value={{ db }}>
+        <input type="submit" class="btn btn-primary" value="Add user">
+    </form>
 </body>
 </html>

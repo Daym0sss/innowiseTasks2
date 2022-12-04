@@ -1,25 +1,14 @@
-function switchToUserAddition()
-{
-    window.location.href ='http://localhost/tasks/task2/users/new';
-}
-
-function deleteConfirmation(id)
+function deleteConfirmation(id,e)
 {
     var del = confirm("Are you sure you want to delete this user?");
     if (del)
     {
-        window.location.href = "http://localhost/tasks/task2/users/delete/" + id;
+        this.form.submit();
     }
-}
-
-function tryEnterDataAgain(link)
-{
-    window.location.href = link;
-}
-
-function switchToPageByNum(link)
-{
-    window.location.href = link;
+    else
+    {
+        e.preventDefault();
+    }
 }
 
 function checkAll()
@@ -32,7 +21,13 @@ function uncheckAll()
     $('body input:checkbox').prop('checked', false);
 }
 
-function deleteSelected()
+function addPageToPostRequest(pressed_value)
+{
+    document.getElementById('pressed_button').value = pressed_value;
+    this.form.submit();
+}
+
+function deleteSelected(db)
 {
     var checked = $(':checkbox:checked').length;
     if (checked === 0)
@@ -53,11 +48,16 @@ function deleteSelected()
                url: 'http://localhost/tasks/task2/users/deleteGroup',
                type: 'POST',
                dataType: 'json',
-               data: {ids : id_arr},
-               success: function()
+               data: {ids : id_arr, currentDB : db},
+               success: function(data)
                {
-                   switchToPageByNum('http://localhost/tasks/task2/');
+                   window.location.href = 'http://localhost/tasks/task2/';
                }
             });
     }
+}
+
+function changeDB()
+{
+   $('#dbForm').submit();
 }

@@ -9,7 +9,9 @@ class UserController
         $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
         $twig = new Twig_Environment($loader);
         $template = $twig->loadTemplate('new.html');
-        echo $template->render(array());
+        echo $template->render(array(
+            'db' => $_POST['db']
+        ));
     }
 
     public function create()
@@ -18,14 +20,17 @@ class UserController
         $email = $_POST['email'];
         $gender = $_POST['gender'];
         $status = $_POST['status'];
-
         $nameValidate = $this->validateName($name);
         $emailValidate = $this->validateEmail($email);
 
         if ($nameValidate && $emailValidate)
         {
-            $instance = LocalDB::getInstance();
+            $instance = forward_static_call(array($_POST['db'], 'getInstance'));
             $instance->create($name, $email, $gender, $status);
+
+            session_start();
+            $_SESSION['db'] = $_POST['db'];
+            session_write_close();
             header("Location: http://localhost/tasks/task2/");
         }
         else
@@ -49,15 +54,16 @@ class UserController
             echo $template->render(array(
                 'link' => $link,
                 'src' => $src,
-                'error' => $error
+                'error' => $error,
+                'db'  => $_POST['db']
             ));
         }
 
     }
 
-    public function getById($id)
+    public function getById($db, $id)
     {
-        $instance = LocalDB::getInstance();
+        $instance = forward_static_call(array($db,'getInstance'));
         $result = $instance->getById($id);
         foreach ($result as $row)
         {
@@ -68,8 +74,7 @@ class UserController
 
     public function edit($id)
     {
-        $this->getById($id);
-
+        $this->getById($_POST['db'], $id);
         $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
         $twig = new Twig_Environment($loader);
         $template = $twig->loadTemplate('edit.html');
@@ -78,7 +83,8 @@ class UserController
             'name' => $this->user->name,
             'email' => $this->user->email,
             'gender' => $this->user->gender,
-            'status' => $this->user->status
+            'status' => $this->user->status,
+            'db' => $_POST['db']
         ));;
     }
 
@@ -89,13 +95,17 @@ class UserController
         $email = $_POST['email'];
         $gender = $_POST['gender'];
         $status = $_POST['status'];
+        $db = $_POST['db'];
 
         $nameValidate = $this->validateName($name);
         $emailValidate = $this->validateEmail($email);
         if ($nameValidate && $emailValidate)
         {
-            $instance = LocalDB::getInstance();
+            $instance = forward_static_call(array($db,'getInstance'));
             $instance->edit($id, $name, $email, $gender, $status);
+            session_start();
+            $_SESSION['db'] = $db;
+            session_write_close();
             header("Location: http://localhost/tasks/task2/");
         }
         else
@@ -119,24 +129,31 @@ class UserController
             echo $template->render(array(
                 'link' => $link,
                 'error' => $error,
-                'src' => $src
+                'src' => $src,
+                'db' => $db
             ));
         }
     }
 
     public function delete($id)
     {
-        $instance = LocalDB::getInstance();
+        $instance = forward_static_call(array($_POST['db'], 'getInstance'));
         $instance->delete($id);
+        session_start();
+        $_SESSION['db'] = $_POST['db'];
+        session_write_close();
         header("Location: http://localhost/tasks/task2/");
     }
 
     public function deleteGroup()
     {
         $id_arr = $_POST['ids'];
-        $instance = LocalDB::getInstance();
+        session_start();
+        $_SESSION['db'] = $_POST['currentDB'];
+        session_write_close();
+        $instance = forward_static_call(array($_POST['currentDB'],'getInstance'));
         $instance->deleteGroup($id_arr);
-        echo json_encode('ok');
+        echo json_encode($_POST);
     }
 
     private function validateName($name): bool

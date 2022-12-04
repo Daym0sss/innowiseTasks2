@@ -6,12 +6,6 @@ class Pager
     private $recordsPerPage = 10;
     private static $instance = null;
 
-    public function __construct()
-    {
-        $dbInstance = LocalDB::getInstance();
-        $this->pagesCount = $dbInstance->pagesCount($this->recordsPerPage);
-    }
-
     public static function getInstance()
     {
         if (!self::$instance)
@@ -23,6 +17,8 @@ class Pager
 
     public function getPage($pageNumber)
     {
+        $dbInstance = Database::$instance;
+        $this->pagesCount = $dbInstance->pagesCount($this->recordsPerPage);
         if ($pageNumber > $this->pagesCount)
         {
             $from_record_number = $this->recordsPerPage * ($this->pagesCount - 1);
@@ -31,7 +27,6 @@ class Pager
         {
             $from_record_number = $this->recordsPerPage * ($pageNumber - 1);
         }
-        $dbInstance = LocalDB::getInstance();
         return $dbInstance->getByPageNum($from_record_number, $this->recordsPerPage);
     }
 
