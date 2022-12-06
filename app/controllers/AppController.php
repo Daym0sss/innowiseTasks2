@@ -60,12 +60,12 @@ class AppController
         $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views");
         $twig = new Twig_Environment($loader);
         $template = $twig->loadTemplate('main.html');
-        echo $template->render(array(
+        echo $template->render([
           'currentPage' => $pageNum,
           'links' => $links,
           'users' => $users,
           'db' => get_class(Database::$instance)
-        ));
+        ]);
       }
     }
 }

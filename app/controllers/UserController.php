@@ -9,9 +9,9 @@ class UserController
         $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
         $twig = new Twig_Environment($loader);
         $template = $twig->loadTemplate('new.html');
-        echo $template->render(array(
+        echo $template->render([
             'db' => $_POST['db']
-        ));
+        ]);
     }
 
     public function create()
@@ -25,7 +25,7 @@ class UserController
 
         if ($nameValidate && $emailValidate)
         {
-            $instance = forward_static_call(array($_POST['db'], 'getInstance'));
+            $instance = forward_static_call([$_POST['db'], 'getInstance']);
             $instance->create($name, $email, $gender, $status);
 
             session_start();
@@ -51,19 +51,19 @@ class UserController
             $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
             $twig = new Twig_Environment($loader);
             $template = $twig->loadTemplate('invalid_data.html');
-            echo $template->render(array(
+            echo $template->render([
                 'link' => $link,
                 'src' => $src,
                 'error' => $error,
                 'db'  => $_POST['db']
-            ));
+            ]);
         }
 
     }
 
     public function getById($db, $id)
     {
-        $instance = forward_static_call(array($db,'getInstance'));
+        $instance = forward_static_call([$db,'getInstance']);
         $result = $instance->getById($id);
         foreach ($result as $row)
         {
@@ -78,14 +78,14 @@ class UserController
         $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
         $twig = new Twig_Environment($loader);
         $template = $twig->loadTemplate('edit.html');
-        echo $template->render(array(
+        echo $template->render([
             'id' => $this->user->id,
             'name' => $this->user->name,
             'email' => $this->user->email,
             'gender' => $this->user->gender,
             'status' => $this->user->status,
             'db' => $_POST['db']
-        ));;
+        ]);
     }
 
     public function update()
@@ -101,7 +101,7 @@ class UserController
         $emailValidate = $this->validateEmail($email);
         if ($nameValidate && $emailValidate)
         {
-            $instance = forward_static_call(array($db,'getInstance'));
+            $instance = forward_static_call([$db,'getInstance']);
             $instance->edit($id, $name, $email, $gender, $status);
             session_start();
             $_SESSION['db'] = $db;
@@ -126,18 +126,18 @@ class UserController
             $loader = new Twig_Loader_Filesystem($_SERVER['DOCUMENT_ROOT'] . "/tasks/task2/app/views/users");
             $twig = new Twig_Environment($loader);
             $template = $twig->loadTemplate('invalid_data.html');
-            echo $template->render(array(
+            echo $template->render([
                 'link' => $link,
                 'error' => $error,
                 'src' => $src,
                 'db' => $db
-            ));
+            ]);
         }
     }
 
     public function delete($id)
     {
-        $instance = forward_static_call(array($_POST['db'], 'getInstance'));
+        $instance = forward_static_call([$_POST['db'], 'getInstance']);
         $instance->delete($id);
         session_start();
         $_SESSION['db'] = $_POST['db'];
@@ -151,7 +151,7 @@ class UserController
         session_start();
         $_SESSION['db'] = $_POST['currentDB'];
         session_write_close();
-        $instance = forward_static_call(array($_POST['currentDB'],'getInstance'));
+        $instance = forward_static_call([$_POST['currentDB'],'getInstance']);
         $instance->deleteGroup($id_arr);
         echo json_encode($_POST);
     }
