@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="assets/javascript/script.js"></script>
+    <title>Main page</title>
+</head>
+<body>
+    <button class="btn btn-primary" onclick="checkAll()">Check all</button>
+    <button class="btn btn-primary" onclick="uncheckAll()">Uncheck all</button>
+    <button class="btn btn-danger" onclick="deleteSelected()">Delete selected users</button>
+    <div style="margin: 0 auto; text-align: center; margin: -40px">
+        Pages
+        {% for linkUrl in links %}
+        {%if loop.index == currentPage %}
+            <button class="btn btn-warning" onclick="switchToPageByNum('{{ linkUrl }}')">{{ loop.index }}</button>
+        {% endif %}
+        {%if loop.index != currentPage %}
+            <button class="btn btn-info" onclick="switchToPageByNum('{{ linkUrl }}')">{{ loop.index }}</button>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <br><br>
+    <table class="table table-hover table-bordered border-info align-middle">
+        <caption>Users information</caption>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>E-mail</th>
+            <th>Gender</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td><input type="checkbox" id={{ user.id }}></td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.gender }}</td>
+            <td>{{ user.status }}</td>
+            <td>
+                <form method="post" action="http://localhost/tasks/task2/users/edit/{{ user.id }}">
+                    <input type="hidden" name='id' value={{ user.id }}>
+                    <input type="submit" class="btn btn-warning" value="Edit">
+                </form>
+                    <input type="hidden" name='id' value={{ user.id }}>
+                    <button class="btn btn-danger" onclick="deleteConfirmation({{ user.id }})">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button class="btn btn-primary" onclick="switchToUserAddition()">Add user</button>
+</body>
+</html>
