@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * @OA\Info(
+ *     title="REST API GoRest",
+ *     version="0.1"
+ * )
+ * @OA\Server(
+ *     url="https://gorest.co.in/public/v2/users"
+ * )
+ */
 class REST_API extends Database implements IRequest
 {
     private $token = "7e8c447ccef10ba84d23ffb9d3272e8ae8cc8869b77724ad050c3af4130fcb29";
@@ -18,6 +27,38 @@ class REST_API extends Database implements IRequest
         return self::$instance;
     }
 
+    /**
+     * @OA\Post(
+     *      path="/",
+     *      operationId="createUser",
+     *      description="create new user",
+     *     @OA\Parameter(
+     *          name="access-token",
+     *          in="query",
+     *          description="Authorization token",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *      @OA\RequestBody(
+     *          description="User information",
+     *          required=true,
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *      ),
+     *     @OA\Response(
+     *          response="200",
+     *          dsecription="Information about created user",
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *     )
+     * )
+     */
     public function create($name, $email, $gender, $status)
     {
         $token = $this->token;
@@ -29,6 +70,47 @@ class REST_API extends Database implements IRequest
         exec($curl,$output,$code);
     }
 
+    /**
+     * @OA\Put(
+     *      path="/{id}",
+     *      operationId="updateUser",
+     *      description="updates existing user",
+     *      @OA\Parameter(
+     *              name="access-token",
+     *              in="query",
+     *              description="Authorization token",
+     *              required=true,
+     *              @OA\Schema(
+     *                  type="string",
+     *              )
+     *      ),
+     *      @OA\Parameter(
+     *              name="id",
+     *              in="query",
+     *              description="User id",
+     *              required=true,
+     *              @OA\Schema(
+     *                  type="integer",
+     *              )
+     *      ),
+     *      @OA\RequestBody(
+     *          description="User information",
+     *          required=true,
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *      ),
+     *     @OA\Response(
+     *          response="200",
+     *          dsecription="Information about updated user",
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *     )
+     * )
+     */
     public function edit($id, $name, $email, $gender, $status)
     {
         $token = $this->token;
@@ -36,6 +118,29 @@ class REST_API extends Database implements IRequest
         exec($curl,$arr);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/",
+     *     operationId="getList",
+     *     @OA\Parameter(
+     *          name="access-token",
+     *          in="query",
+     *          description="Authorization token",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="List of users with information",
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *     )
+     * )
+     */
     public function getList()
     {
         $token = $this->token;
@@ -59,6 +164,38 @@ class REST_API extends Database implements IRequest
         return $result;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/{id}",
+     *     operationId="getUserById",
+     *     @OA\Parameter(
+     *          name="access-token",
+     *          in="query",
+     *          description="Authorization token",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="query",
+     *          description="User id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Requested user with its information",
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *     )
+     * )
+     */
     public function getById($id)
     {
         $token = $this->token;
@@ -68,16 +205,44 @@ class REST_API extends Database implements IRequest
         $result = [];
 
         $result[] = [
-          'id' => $obj->{"id"},
-          'name' => $obj->{"name"},
-          'email' => $obj->{"email"},
-          'gender' => $obj->{"gender"},
-          'status' => $obj->{"status"},
+            'id' => $obj->{"id"},
+            'name' => $obj->{"name"},
+            'email' => $obj->{"email"},
+            'gender' => $obj->{"gender"},
+            'status' => $obj->{"status"},
         ];
 
         return $result;
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/{id}",
+     *     operationId="deleteUser",
+     *     @OA\Parameter(
+     *          name="access-token",
+     *          in="query",
+     *          description="Authorization token",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="query",
+     *          description="User id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response=201,
+     *          description="User deleted",
+     *     )
+     * )
+     */
     public function delete($id)
     {
         $token = $this->token;
