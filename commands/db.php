@@ -13,5 +13,5 @@
 
     /*
      *  $seed = new UserFactory(10); initialize seed object
-     *  $seed->run();  method for fulfill table with test data
+     *  $seed->run();  method for fulfill table with test data.txt
      */

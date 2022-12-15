@@ -9,6 +9,9 @@
 </head>
 <body>
     <h1>The data you have entered is invalid: <br>  {{ error }} </h1>
-    <button class="btn btn-info" onclick="tryEnterDataAgain('{{ link }}')">Try again</button>
+    <form method="post" action="{{ link }}">
+        <input type="hidden" name="db" value={{ db }}>
+        <input type="submit" class="btn btn-info" value="Try again">
+    </form>
 </body>
 </html>
