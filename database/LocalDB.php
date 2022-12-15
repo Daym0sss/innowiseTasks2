@@ -15,7 +15,7 @@ class LocalDB extends Database implements IRequest
 
     public static function getInstance()
     {
-        if(!self::$instance)
+        if(!self::$instance || get_class(self::$instance) != "LocalDB")
         {
             self::$instance = new LocalDB();
         }

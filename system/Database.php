@@ -2,7 +2,7 @@
 
 abstract class Database
 {
-    protected static $instance = null;
+    public static $instance = null;
     protected $conn;
 
     public function getConnection()
