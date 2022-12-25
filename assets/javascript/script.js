@@ -1,3 +1,6 @@
+import "../css/compiled_styles.sass"
+import 'bootstrap'
+
 function deleteConfirmation(id,e)
 {
     var del = confirm("Are you sure you want to delete this user?");
