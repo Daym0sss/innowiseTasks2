@@ -68,6 +68,7 @@ class REST_API extends Database implements IRequest
         $output = [];
         $code = 0;
         exec($curl,$output,$code);
+        return $output;
     }
 
     /**
@@ -116,6 +117,7 @@ class REST_API extends Database implements IRequest
         $token = $this->token;
         $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XPATCH \"https://gorest.co.in/public/v2/users/$id?access-token=$token\" -d '{\"name\":\"$name\", \"email\":\"$email\", \"gender\":\"$gender\", \"status\":\"$status\"}'";
         exec($curl,$arr);
+        return $arr;
     }
 
     /**
@@ -248,6 +250,7 @@ class REST_API extends Database implements IRequest
         $token = $this->token;
         $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XDELETE \"https://gorest.co.in/public/v2/users/$id?access-token=$token\"";
         exec($curl,$arr);
+        return $arr;
     }
 
     public function deleteGroup($id_arr)
