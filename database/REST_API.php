@@ -11,7 +11,7 @@
  */
 class REST_API extends Database implements IRequest
 {
-    private $token = "7e8c447ccef10ba84d23ffb9d3272e8ae8cc8869b77724ad050c3af4130fcb29";
+    private $token = "4635191bf48536cfbf822e56aa7a7451c8b1d5c4ff841b998e6952bc1dee5aeb";
 
     public function __construct()
     {
@@ -63,7 +63,13 @@ class REST_API extends Database implements IRequest
     {
         $token = $this->token;
         $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XPOST \"https://gorest.co.in/public/v2/users?access-token=$token\" -d ";
-        $json = "'{\"name\":\"$name\", \"email\":\"$email\", \"gender\":\"$gender\", \"status\":\"$status\"}'";
+        $data = [
+          'name' => $name,
+          'email' => $email,
+          'gender' => $gender,
+          'status' => $status,
+        ];
+        $json = json_encode($data);
         $curl .= $json;
         $output = [];
         $code = 0;
@@ -115,7 +121,15 @@ class REST_API extends Database implements IRequest
     public function edit($id, $name, $email, $gender, $status)
     {
         $token = $this->token;
-        $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XPATCH \"https://gorest.co.in/public/v2/users/$id?access-token=$token\" -d '{\"name\":\"$name\", \"email\":\"$email\", \"gender\":\"$gender\", \"status\":\"$status\"}'";
+        $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XPATCH \"https://gorest.co.in/public/v2/users/$id?access-token=$token\" -d ";
+        $data = [
+            'name' => $name,
+            'email' => $email,
+            'gender' => $gender,
+            'status' => $status,
+        ];
+        $json = json_encode($data);
+        $curl .= $json;
         exec($curl,$arr);
         return $arr;
     }
