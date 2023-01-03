@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * @OA\Info(
+ *     title="REST API GoRest",
+ *     version="0.1"
+ * )
+ * @OA\Server(
+ *     url="https://gorest.co.in/public/v2/users"
+ * )
+ */
 class REST_API extends Database implements IRequest
 {
-    private $token = "7e8c447ccef10ba84d23ffb9d3272e8ae8cc8869b77724ad050c3af4130fcb29";
+    private $token = "4635191bf48536cfbf822e56aa7a7451c8b1d5c4ff841b998e6952bc1dee5aeb";
 
     public function __construct()
     {
@@ -18,24 +27,136 @@ class REST_API extends Database implements IRequest
         return self::$instance;
     }
 
+    /**
+     * @OA\Post(
+     *      path="/",
+     *      operationId="createUser",
+     *      description="create new user",
+     *     @OA\Parameter(
+     *          name="access-token",
+     *          in="query",
+     *          description="Authorization token",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *      @OA\RequestBody(
+     *          description="User information",
+     *          required=true,
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *      ),
+     *     @OA\Response(
+     *          response="200",
+     *          dsecription="Information about created user",
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *     )
+     * )
+     */
     public function create($name, $email, $gender, $status)
     {
         $token = $this->token;
         $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XPOST \"https://gorest.co.in/public/v2/users?access-token=$token\" -d ";
-        $json = "'{\"name\":\"$name\", \"email\":\"$email\", \"gender\":\"$gender\", \"status\":\"$status\"}'";
+        $data = [
+          'name' => $name,
+          'email' => $email,
+          'gender' => $gender,
+          'status' => $status,
+        ];
+        $json = json_encode($data);
         $curl .= $json;
         $output = [];
         $code = 0;
         exec($curl,$output,$code);
+        return $output;
     }
 
+    /**
+     * @OA\Put(
+     *      path="/{id}",
+     *      operationId="updateUser",
+     *      description="updates existing user",
+     *      @OA\Parameter(
+     *              name="access-token",
+     *              in="query",
+     *              description="Authorization token",
+     *              required=true,
+     *              @OA\Schema(
+     *                  type="string",
+     *              )
+     *      ),
+     *      @OA\Parameter(
+     *              name="id",
+     *              in="query",
+     *              description="User id",
+     *              required=true,
+     *              @OA\Schema(
+     *                  type="integer",
+     *              )
+     *      ),
+     *      @OA\RequestBody(
+     *          description="User information",
+     *          required=true,
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *      ),
+     *     @OA\Response(
+     *          response="200",
+     *          dsecription="Information about updated user",
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *     )
+     * )
+     */
     public function edit($id, $name, $email, $gender, $status)
     {
         $token = $this->token;
-        $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XPATCH \"https://gorest.co.in/public/v2/users/$id?access-token=$token\" -d '{\"name\":\"$name\", \"email\":\"$email\", \"gender\":\"$gender\", \"status\":\"$status\"}'";
+        $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XPATCH \"https://gorest.co.in/public/v2/users/$id?access-token=$token\" -d ";
+        $data = [
+            'name' => $name,
+            'email' => $email,
+            'gender' => $gender,
+            'status' => $status,
+        ];
+        $json = json_encode($data);
+        $curl .= $json;
         exec($curl,$arr);
+        return $arr;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/",
+     *     operationId="getList",
+     *     @OA\Parameter(
+     *          name="access-token",
+     *          in="query",
+     *          description="Authorization token",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="List of users with information",
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *     )
+     * )
+     */
     public function getList()
     {
         $token = $this->token;
@@ -59,6 +180,38 @@ class REST_API extends Database implements IRequest
         return $result;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/{id}",
+     *     operationId="getUserById",
+     *     @OA\Parameter(
+     *          name="access-token",
+     *          in="query",
+     *          description="Authorization token",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="query",
+     *          description="User id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Requested user with its information",
+     *          @OA\JsonContent(
+     *                  type="array",
+     *                  @OA\Items(type="string")
+     *          )
+     *     )
+     * )
+     */
     public function getById($id)
     {
         $token = $this->token;
@@ -68,21 +221,50 @@ class REST_API extends Database implements IRequest
         $result = [];
 
         $result[] = [
-          'id' => $obj->{"id"},
-          'name' => $obj->{"name"},
-          'email' => $obj->{"email"},
-          'gender' => $obj->{"gender"},
-          'status' => $obj->{"status"},
+            'id' => $obj->{"id"},
+            'name' => $obj->{"name"},
+            'email' => $obj->{"email"},
+            'gender' => $obj->{"gender"},
+            'status' => $obj->{"status"},
         ];
 
         return $result;
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/{id}",
+     *     operationId="deleteUser",
+     *     @OA\Parameter(
+     *          name="access-token",
+     *          in="query",
+     *          description="Authorization token",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="query",
+     *          description="User id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response=201,
+     *          description="User deleted",
+     *     )
+     * )
+     */
     public function delete($id)
     {
         $token = $this->token;
         $curl = "curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer ACCESS-TOKEN\" -XDELETE \"https://gorest.co.in/public/v2/users/$id?access-token=$token\"";
         exec($curl,$arr);
+        return $arr;
     }
 
     public function deleteGroup($id_arr)

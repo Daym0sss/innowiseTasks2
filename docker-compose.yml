@@ -1,0 +1,22 @@
+version: '3'
+services:
+  php:
+    build:
+      context: ./php
+    volumes:
+      - './:/var/www/html'
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - './:/var/www/html'
+      - './nginx/conf.d:/etc/nginx/conf.d'
+
+  mysql:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=mynewpassword
+    volumes:
+      - './volume/mysql:/var/lib/mysql'
